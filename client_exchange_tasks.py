@@ -2,7 +2,7 @@ import aiohttp, argparse, asyncio, datetime, platform
 # import sys
 
 
-URL = "https://api.privatbank.ua/p24api/exchange_rates?date="
+URL = "https://api.privatbank.ua/p24api/exchange_rates?json&date="
 
 
 class HttpError(Exception):
@@ -21,7 +21,7 @@ async def request(session, url: str):
         raise HttpError(f'Connection error: {url}', str(err))
 
 
-async def main(shift_days: str):
+async def main(shift_days: str) -> list:
     shift_days = int(shift_days)
     tasks = []
     async with aiohttp.ClientSession() as session:
@@ -69,10 +69,10 @@ def get_currency_rates_all_days(data: dict, currencies: list) -> dict:
 
 def output_currency_rates_all_days(data: dict) -> None:
     header_format = "{:^12} {:^10} {:<10} {:<10}"
-    # Вывод заголовка таблицы
+    # Виведення заголовку таблиці
     print("-"*44)
     print(header_format.format("Дата", "Валюта", "Продажа", "Покупка"))
-    # Вывод данных в таблице
+    # Виведення даних у таблиці
     for date, currencies in data.items():
         print("-"*44)
         for currency, rates in currencies.items():
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     if args.days:
         selected_days = args.days
     else:
-        selected_days = "1"
+        selected_days = "2"
     if args.currencies:
         selected_currencies = args.currencies
     else:

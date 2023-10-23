@@ -1,0 +1,4 @@
+[23.10.2023 19:03:55] -> There is command "exchange" executed.
+[23.10.2023 19:04:40] -> There is command "exchange" executed.
+[23.10.2023 20:09:30] -> There is command "exchange" executed.
+[23.10.2023 20:22:56] -> There is command "exchange" executed.
