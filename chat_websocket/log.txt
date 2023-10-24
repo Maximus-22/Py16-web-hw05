@@ -2,3 +2,5 @@
 [23.10.2023 19:04:40] -> There is command "exchange" executed.
 [23.10.2023 20:09:30] -> There is command "exchange" executed.
 [23.10.2023 20:22:56] -> There is command "exchange" executed.
+[24.10.2023 15:27:44] -> There is command "exchange" executed.
+[24.10.2023 15:28:32] -> There is command "exchange" executed.

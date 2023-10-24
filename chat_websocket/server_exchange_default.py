@@ -8,6 +8,8 @@ from websockets.exceptions import ConnectionClosedOK
 logging.basicConfig(level=logging.INFO)
 
 
+# як з'ясувалося package [httpx] бiльш швидко загублює сесiю, якщо йому вiдповiдають повiльно,
+# тому декiлька запросiв будуть оброблюватися package [aiohttp]
 async def request(url: str) -> dict:
     async with httpx.AsyncClient() as client:
         rqst = await client.get(url)
@@ -28,7 +30,7 @@ async def get_exchange() -> list:
         # # то ж [response] обгортаємо у str() -> [str(response)]
         # return str(response)
         # наразі вивід буде перероблений у більш придатний вигляд, та переданий у функцію-форматтер, тому саме в цьому
-        # випадку повертаємо dict()
+        # випадку повертаємо list[dict()]
         return response
     except Exception as err:
         print(f"The request caught HTTPError {err}.")

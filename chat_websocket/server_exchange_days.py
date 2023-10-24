@@ -1,6 +1,6 @@
 import asyncio, datetime, logging, re
 
-import aiofile, httpx, names, websockets
+import aiofile, aiohttp, httpx, names, websockets
 from aiopath import AsyncPath
 from websockets import WebSocketServerProtocol
 from websockets.exceptions import ConnectionClosedOK
@@ -13,16 +13,26 @@ CURRENCY = {"EUR", "PLN", "USD"}
 PATTERN = r"^exchange (\d)$"
 # PATTERN = r"^exchange (\d+)$"
 
+# async def request(url: str) -> dict:
+#     async with httpx.AsyncClient() as client:
+#         rqst = await client.get(url)
+#         if rqst.status_code == 200:
+#             result = rqst.json()
+#             return result
+#         else:
+#             raise Exception(f"HTTPError status: {rqst.status_code} for {url}.")
+#         # else:
+#         #     return "Щось пійшло не за планом ..."
+
+
 async def request(url: str) -> dict:
-    async with httpx.AsyncClient() as client:
-        rqst = await client.get(url)
-        if rqst.status_code == 200:
-            result = rqst.json()
-            return result
-        else:
-            raise Exception(f"HTTPError status: {rqst.status_code} for {url}.")
-        # else:
-        #     return "Щось пійшло не за планом ..."
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status == 200:
+                result = await response.json()
+                return result
+            else:
+                raise Exception(f"HTTPError status: {response.status} for {url}.")
 
 
 async def get_exchange(shift_days: str) -> list:
@@ -39,7 +49,7 @@ async def get_exchange(shift_days: str) -> list:
             # # то ж [response] обгортаємо у str() -> [str(response)]
             # return str(response)
             # наразі вивід буде перероблений у більш придатний вигляд, та переданий у функцію-форматтер, тому саме в цьому
-            # випадку повертаємо dict()            
+            # випадку повертаємо list[dict()]            
         except Exception as err:
             print(f"The request caught HTTPError {err}.")
             return None
